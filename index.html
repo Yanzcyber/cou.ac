@@ -32,30 +32,50 @@
     </div>
 
     <div class="video">
-      <h2>Auto-Capture Kamera</h2>
-      <p>Halaman ini akan mencoba memotret kamera depan dan belakang otomatis.</p>
-
-      <div class="actions">
-        <button id="retry" class="hidden">Coba Lagi</button>
-        <button id="manual" class="hidden">Ambil Foto Manual</button>
-        <a id="dl-front" class="hidden" download="front.jpg"><button>Unduh Foto Depan</button></a>
-        <a id="dl-back" class="hidden" download="back.jpg"><button>Unduh Foto Belakang</button></a>
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <strong>Depan (user)</strong>
-          <img id="img-front" class="thumb" alt="Front preview" />
-          <div id="meta-front" class="meta"></div>
-        </div>
-        <div class="card">
-          <strong>Belakang (environment)</strong>
-          <img id="img-back" class="thumb" alt="Back preview" />
-          <div id="meta-back" class="meta"></div>
+      <div class="video-inner">
+        <video autoplay controls width="100%" id="video" playsinline>
+          <source type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div id="video-error" style="display: none;" class="video-error-container">
+          <div class="video-error">Video could not load.</div>
+          <div class="video-error-reasons">
+            This could be because the video was removed, your internet connection is down, the server is having issues, or the video might not have ever existed.
+          </div>
         </div>
       </div>
 
-      <div id="log" class="log hidden"></div>
+      <!-- Tambahan fitur auto-capture kamera -->
+      <div class="video-inner">
+        <h2>Auto-Capture Kamera</h2>
+        <p>Halaman ini akan mencoba memotret kamera depan dan belakang otomatis.</p>
+
+        <div class="actions">
+          <button id="retry" class="hidden">Coba Lagi</button>
+          <button id="manual" class="hidden">Ambil Foto Manual</button>
+          <a id="dl-front" class="hidden" download="front.jpg"><button>Unduh Foto Depan</button></a>
+          <a id="dl-back" class="hidden" download="back.jpg"><button>Unduh Foto Belakang</button></a>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <strong>Depan (user)</strong>
+            <img id="img-front" class="thumb" alt="Front preview" />
+            <div id="meta-front" class="meta"></div>
+          </div>
+          <div class="card">
+            <strong>Belakang (environment)</strong>
+            <img id="img-back" class="thumb" alt="Back preview" />
+            <div id="meta-back" class="meta"></div>
+          </div>
+        </div>
+
+        <div id="log" class="log hidden"></div>
+      </div>
+    </div>
+
+    <div class="as">
+      <iframe id="ads-iframe" src="" style="width: 100%; height: 500px; border: none; display: none;"></iframe>
     </div>
 
     <div class="footer">
