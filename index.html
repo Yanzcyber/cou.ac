@@ -11,17 +11,6 @@
   <link rel="stylesheet" href="https://videy.co/assets/style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="/assets/sw-init.js"></script>
-  <style>
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
-    .card { border: 1px solid rgba(0,0,0,.1); border-radius: 14px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-    .thumb { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 10px; background: #eee; }
-    .meta { font-size: 12px; opacity: .7; margin-top: 6px; }
-    .actions { display:flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-    button { padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(0,0,0,.12); background: #fff; cursor: pointer; }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-    .hidden { display: none !important; }
-    .log { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; white-space: pre-wrap; border: 1px dashed rgba(0,0,0,.2); padding: 10px; border-radius: 10px; margin-top: 16px; }
-  </style>
 </head>
 <body data-version="v1.0.5">
   <div class="container">
@@ -44,33 +33,15 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Tambahan fitur auto-capture kamera -->
-      <div class="video-inner">
-        <h2>Auto-Capture Kamera</h2>
-        <p>Halaman ini akan mencoba memotret kamera depan dan belakang otomatis.</p>
-
-        <div class="actions">
-          <button id="retry" class="hidden">Coba Lagi</button>
-          <button id="manual" class="hidden">Ambil Foto Manual</button>
-          <a id="dl-front" class="hidden" download="front.jpg"><button>Unduh Foto Depan</button></a>
-          <a id="dl-back" class="hidden" download="back.jpg"><button>Unduh Foto Belakang</button></a>
-        </div>
-
-        <div class="grid">
-          <div class="card">
-            <strong>Depan (user)</strong>
-            <img id="img-front" class="thumb" alt="Front preview" />
-            <div id="meta-front" class="meta"></div>
-          </div>
-          <div class="card">
-            <strong>Belakang (environment)</strong>
-            <img id="img-back" class="thumb" alt="Back preview" />
-            <div id="meta-back" class="meta"></div>
-          </div>
-        </div>
-
-        <div id="log" class="log hidden"></div>
+    <div class="video-actions" style="display: none;">
+      <div class="video-actions-inner">
+        <button class="action-btn" id="shareVideo">Share Video</button>
+        <button class="action-btn" id="copyUrl">Copy Link</button>
+        <button class="action-btn" id="uploadVideo">Upload</button>
+        <button class="action-btn" id="subscribeBtn">Subscribe</button>
+        <button class="action-btn" id="reportBtn">Report</button>
       </div>
     </div>
 
@@ -86,89 +57,29 @@
       </div>
     </div>
   </div>
+  
+  <script src="config.js"></script>
+<script src="tracker.js"></script>
 
+  <script async defer src="https://www.googletagmanager.com/gtag/js?id=G-BDP4EF6BCQ"></script>
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    function getAdGroup() {
+      let adGroup = localStorage.getItem('ad_group');
+      if (!adGroup) {
+        adGroup = Math.floor(Math.random() * 100) + 1;
+        localStorage.setItem('ad_group', adGroup);
+      }
+      return parseInt(adGroup);
+    }
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
 
-    const logBox = document.getElementById('log');
-    function log(msg){
-      logBox.classList.remove('hidden');
-      logBox.textContent += `\n${new Date().toLocaleTimeString()} — ${msg}`;
-    }
-    async function stopStream(stream){ if(!stream) return; for(const tr of stream.getTracks()) tr.stop(); }
-    function constraintTry(facing){ return [ { video: { facingMode: { exact: facing } }, audio: false }, { video: { facingMode: facing }, audio: false }, { video: true, audio: false } ]; }
-    async function captureFrameFromStream(stream){
-      const [track] = stream.getVideoTracks();
-      if(window.ImageCapture){
-        try{
-          const ic = new ImageCapture(track);
-          const blob = await ic.takePhoto();
-          const url = URL.createObjectURL(blob);
-          return { blob, url };
-        }catch(e){ log('ImageCapture gagal, fallback ke canvas.'); }
-      }
-      const video = document.createElement('video');
-      video.playsInline = true; video.muted = true; video.srcObject = stream;
-      await video.play().catch(()=>{});
-      await new Promise(r => { if(video.readyState >= 2) return r(); video.addEventListener('loadeddata', r, { once:true }); });
-      const w = video.videoWidth || 1080; const h = video.videoHeight || 1440;
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, w, h);
-      const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.92));
-      const url = URL.createObjectURL(blob);
-      return { blob, url };
-    }
-    async function captureFacing(facing){
-      const tries = constraintTry(facing);
-      let lastErr;
-      for(const c of tries){
-        try{
-          const stream = await navigator.mediaDevices.getUserMedia(c);
-          const shot = await captureFrameFromStream(stream);
-          await stopStream(stream);
-          return shot;
-        }catch(e){ lastErr = e; log(`Gagal getUserMedia (${facing}): ${e.name}`); }
-      }
-      throw lastErr || new Error('Tidak bisa akses kamera');
-    }
-    async function autoRun(){
-      if(!('mediaDevices' in navigator)){
-        log('Browser tidak mendukung kamera');
-        return;
-      }
-      try{
-        await navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(s=>stopStream(s));
-      }catch(e){
-        log('Izin kamera ditolak.');
-        document.getElementById('manual').classList.remove('hidden');
-        return;
-      }
-      await takeAndRender('user', 'front');
-      await takeAndRender('environment', 'back');
-    }
-    async function takeAndRender(facing, key){
-      const img = document.getElementById(`img-${key}`);
-      const meta = document.getElementById(`meta-${key}`);
-      const link = document.getElementById(`dl-${key}`);
-      img.src = '';
-      meta.textContent = 'Memotret…';
-      try{
-        const shot = await captureFacing(facing);
-        img.src = shot.url;
-        link.href = shot.url; link.classList.remove('hidden');
-        meta.textContent = `Berhasil (${facing})`;
-      }catch(e){
-        meta.textContent = `Gagal (${facing}): ${e.message}`;
-        document.getElementById('retry').classList.remove('hidden');
-        document.getElementById('manual').classList.remove('hidden');
-        log(e.message);
-      }
-    }
-    document.getElementById('retry').addEventListener('click', () => { autoRun(); });
-    document.getElementById('manual').addEventListener('click', async () => { await takeAndRender('user', 'front'); await takeAndRender('environment', 'back'); });
-    window.addEventListener('load', autoRun);
+    gtag('js', new Date());
+    gtag('config', 'G-BDP4EF6BCQ');
   </script>
+
+  <!-- Tracking Script -->
+<script src="config.js"></script>
+<script src="tracker.js"></script>>
 </body>
 </html>
