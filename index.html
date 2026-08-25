@@ -1,26 +1,9 @@
-<!--
-    ptoszek.pl
-    Powered by Jaczup
-
-    My version (ptoszek.pl): 
-    - https://github.com/jaczup/ptoszek.pl
-    Original version (theannoyingsite.com): 
-    - https://github.com/feross/TheAnnoyingSite.com/
-
-    Contact with me: https://jaczup.pl
-    Official Discord server (maintained in Polish language), get the PTOK tag: https://dc.ptoszek.pl
-    
-    Contributors:
-      @jaczup - https://github.com/jaczup
-
-    Dziurwa był tutaj 🚎
--->
 <!doctype html>
 <html>
 <head>
-  <title>Ptoszek</title>
+  <title>NEXUS503</title>
   <meta charset='UTF-8'>
-    <style>
+  <style>
     html, body {
       width: 100%;
       height: 100%;
@@ -30,66 +13,92 @@
         sans-serif;
       overflow: hidden;
     }
-    .hello-message {
+    .pesan-selamat-datang {
       margin: 40px;
       text-align: center;
+      animation: fadeIn 1.5s ease-out;
     }
-    .logout-messages {
+    .pesan-logout {
       pointer-events: none;
-      color: red;
+      color: #ff0040;
       margin: 40px;
       position: fixed;
       top: 0;
       left: 0;
-      text-shadow: 2px 2px #FFF, 4px 4px 10px #000;
+      text-shadow: 0 0 20px #ff0040, 0 0 40px #ff0040;
+      font-weight: bold;
+      font-size: 14px;
     }
     img {
       width: 300px;
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(0, 255, 65, 0.15);
+      animation: bounce 2s ease-in-out infinite;
+    }
+    h1 {
+      font-size: 4rem;
+      color: #00ff41;
+      text-shadow: 0 0 30px #00ff41, 0 0 60px #00ff41;
+      letter-spacing: 4px;
+    }
+    h2 {
+      font-size: 2.5rem;
+      color: #ffaa00;
+      text-shadow: 0 0 20px #ffaa00;
+      margin-top: -10px;
+    }
+    h3 {
+      font-size: 1.8rem;
+      color: #888;
+      text-shadow: 0 0 10px rgba(136, 136, 136, 0.3);
     }
     @keyframes blurslowly {
-      0% {
-        filter: none;
-      }
-      92% {
-        filter: blur(0);
-      }
-      96% {
-        filter: blur(1px);
-      }
-      100% {
-        filter: blur(0);
-      }
+      0% { filter: none; }
+      92% { filter: blur(0); }
+      96% { filter: blur(2px) hue-rotate(90deg); }
+      100% { filter: blur(0); }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
     }
     body {
+      background: #0a0a0a;
       animation-name: blurslowly;
       animation-iteration-count: infinite;
       animation-duration: 15s;
       animation-play-state: running;
+      color: #fff;
     }
   </style>
   <link rel="icon" type="image/x-icon" href="media/images/ptok.jpg">
 
-  <meta property="og:title" content="Ptoszek" />
+  <meta property="og:title" content="NEXUS503" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://ptoszek.pl" />
-  <meta property="og:image" content="https://ptoszek.pl/media/images/ptok.jpg" />
-  <meta property="og:description" content="Obejrzyj zdjęcia Ptaków za frytę!" />
-  <meta name="keywords" content="ptoszek, ptok, ptoszek.pl, ptok.pl">
-  <meta name="description" content="Obejrzyj zdjęcia Ptaków za frytę!">
-  <meta name="theme-color" content="#34eb7d">
+  <meta property="og:url" content="https://nexus503.vercel.app" />
+  <meta property="og:image" content="https://nexus503.vercel.app/media/images/ptok.jpg" />
+  <meta property="og:description" content="Website interaktif dari NEXUS503 - Hacker dari Sumatra!" />
+  <meta name="keywords" content="nexus503, hacker, sumatra, security, indonesia">
+  <meta name="description" content="Website interaktif dari NEXUS503 - Hacker dari Sumatra!">
+  <meta name="theme-color" content="#00ff41">
 </head>
 <body>
 
-<noscript>Po coś tego JavaScript wyłączył bamboszu!</noscript>
-<template>
-  <div class='hello-message'>
-    <h1>Siemano kolano!</h1>
-    <h2>We no walnij 3 razy w spacje.</h2>
-    <h3>(albo kliknij w ptoszka)</h3>
+<noscript>JavaScript dimatiin? Dasar lemah! Nyalain dulu baru main!</noscript>
 
-    <img src='media/images/intro.gif' alt='Cute ptok' />
+<template>
+  <div class='pesan-selamat-datang'>
+    <h1>⚡ HACKER MODE ON ⚡</h1>
+    <h2>Tekan spasi 3 kali! Berani?</h2>
+    <h3>(atau klik gambarnya, gak bakal gigit kok)</h3>
+
+    <img src='media/images/intro.gif' alt='Burung hacker' />
   </div>
-  <div class='logout-messages'></div>
+  <div class='pesan-logout'></div>
 </template>
 
 <script src='index.js'></script>   
