@@ -108,7 +108,7 @@ const UNDUHAN = [
 
 // Frasa untuk text-to-speech
 const FRASA = [
-  'halo nama saya ptoszek, wkwk',
+  'halo nama saya nexus503, wkwk',
   'burung itu lucu lalalalalalalallalala',
   'apa kabar bro',
   'knuuurrr ledakan',
